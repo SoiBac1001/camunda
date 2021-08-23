@@ -140,11 +140,11 @@
             <artifactId>h2</artifactId>
             <scope>compile</scope> <!-- use compile, as we also use H2 locally to run it -->
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>19.3.0.0</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <!-- For the demo I used ElephantSQL as cloud version of PostgreSQL -->
