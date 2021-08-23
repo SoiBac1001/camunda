@@ -1,0 +1,15 @@
+<process-application
+        xmlns="http://www.camunda.org/schema/1.0/ProcessApplication"
+>
+
+    <process-archive>
+        <process-engine>default</process-engine>
+        <properties>
+            <property name="isDeleteUponUndeploy">true</property>
+            <property name="isScanForProcessDefinitions">true</property>
+            <property name="additionalResourceSuffixes">html</property>
+            <property name="jdbcBatchProcessing">false</property>
+        </properties>
+    </process-archive>
+
+</process-application>

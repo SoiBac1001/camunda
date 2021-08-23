@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_013h8bj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.2">
+  <bpmn:process id="prsTestJob" name="Test job process" isExecutable="true" camunda:historyTimeToLive="5">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_161sap6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0t3kye0" name="End ok">
+      <bpmn:incoming>Flow_010a4w1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_161sap6" sourceRef="StartEvent_1" targetRef="Activity_1xsvvst">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.fsoft.fhn.fhs.camunda.FlwGenFirstRunDelegate" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1bur54m" sourceRef="Activity_1xsvvst" targetRef="gtwToJob">
+      <bpmn:extensionElements>
+        <camunda:executionListener expression="${execution.setVariable(&#39;endFlag&#39;,false)}" event="take" />
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+    <bpmn:scriptTask id="Activity_1xsvvst" name="Start log" scriptFormat="groovy">
+      <bpmn:incoming>Flow_161sap6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bur54m</bpmn:outgoing>
+      <bpmn:script>println "Process trigger. Instance id" + execution.getProcessInstanceId()</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_04banlf" sourceRef="atvGenerateNextRun" targetRef="gtwToEnd" />
+    <bpmn:serviceTask id="atvGenerateNextRun" name="Generate next run" camunda:delegateExpression="${FlwGenFirstRunDelegate}">
+      <bpmn:incoming>Flow_0aqdvek</bpmn:incoming>
+      <bpmn:outgoing>Flow_04banlf</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="gtwToEnd" default="Flow_0lfky85">
+      <bpmn:incoming>Flow_04banlf</bpmn:incoming>
+      <bpmn:outgoing>Flow_010a4w1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lfky85</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_010a4w1" sourceRef="gtwToEnd" targetRef="Event_0t3kye0">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${endFlag}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="gtwToJob">
+      <bpmn:incoming>Flow_1bur54m</bpmn:incoming>
+      <bpmn:incoming>Flow_0lfky85</bpmn:incoming>
+      <bpmn:outgoing>Flow_056wm3z</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_056wm3z" sourceRef="gtwToJob" targetRef="tmrTheJob" />
+    <bpmn:sequenceFlow id="Flow_0aqdvek" sourceRef="tmrTheJob" targetRef="atvGenerateNextRun" />
+    <bpmn:intermediateCatchEvent id="tmrTheJob">
+      <bpmn:incoming>Flow_056wm3z</bpmn:incoming>
+      <bpmn:outgoing>Flow_0aqdvek</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_12174ev">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${nextRun}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0lfky85" sourceRef="gtwToEnd" targetRef="gtwToJob" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="prsTestJob">
+      <bpmndi:BPMNEdge id="Flow_1bur54m_di" bpmnElement="Flow_1bur54m">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="475" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_161sap6_di" bpmnElement="Flow_161sap6">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04banlf_di" bpmnElement="Flow_04banlf">
+        <di:waypoint x="750" y="117" />
+        <di:waypoint x="915" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_010a4w1_di" bpmnElement="Flow_010a4w1">
+        <di:waypoint x="965" y="117" />
+        <di:waypoint x="1132" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_056wm3z_di" bpmnElement="Flow_056wm3z">
+        <di:waypoint x="525" y="117" />
+        <di:waypoint x="562" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aqdvek_di" bpmnElement="Flow_0aqdvek">
+        <di:waypoint x="598" y="117" />
+        <di:waypoint x="650" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lfky85_di" bpmnElement="Flow_0lfky85">
+        <di:waypoint x="940" y="142" />
+        <di:waypoint x="940" y="260" />
+        <di:waypoint x="500" y="260" />
+        <di:waypoint x="500" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0t3kye0_di" bpmnElement="Event_0t3kye0">
+        <dc:Bounds x="1132" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1133" y="142" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jw09so_di" bpmnElement="Activity_1xsvvst">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dn6tr3_di" bpmnElement="atvGenerateNextRun">
+        <dc:Bounds x="650" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_18ih03s_di" bpmnElement="gtwToEnd" isMarkerVisible="true">
+        <dc:Bounds x="915" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1vxfplf_di" bpmnElement="gtwToJob" isMarkerVisible="true">
+        <dc:Bounds x="475" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1q4abfy_di" bpmnElement="tmrTheJob">
+        <dc:Bounds x="562" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

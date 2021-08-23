@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_013h8bj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.2">
+  <bpmn:process id="prsLanding" name="Landing message" isExecutable="true" camunda:versionTag="v1" camunda:historyTimeToLive="5" camunda:isStartableInTasklist="false">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_064i21w</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0t3kye0" name="End ok">
+      <bpmn:incoming>Flow_0iyd3qx</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1h02f3h" sourceRef="Activity_0w2n24h" targetRef="Activity_01dbe2o" />
+    <bpmn:serviceTask id="Activity_0w2n24h" name="SetOK" camunda:expression="${execution.setVariable(&#39;theMessage2&#39;,&#39;This is message 2&#39;)}">
+      <bpmn:incoming>Flow_064i21w</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h02f3h</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0iyd3qx" sourceRef="Activity_01dbe2o" targetRef="Event_0t3kye0" />
+    <bpmn:userTask id="Activity_01dbe2o" name="Case landing">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="inputMessage" label="Input message" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" config="true" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1h02f3h</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iyd3qx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_064i21w" sourceRef="StartEvent_1" targetRef="Activity_0w2n24h" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="prsLanding">
+      <bpmndi:BPMNEdge id="Flow_064i21w_di" bpmnElement="Flow_064i21w">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="290" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0iyd3qx_di" bpmnElement="Flow_0iyd3qx">
+        <di:waypoint x="550" y="117" />
+        <di:waypoint x="652" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h02f3h_di" bpmnElement="Flow_1h02f3h">
+        <di:waypoint x="390" y="117" />
+        <di:waypoint x="450" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0t3kye0_di" bpmnElement="Event_0t3kye0">
+        <dc:Bounds x="652" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="653" y="142" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0q73th6_di" bpmnElement="Activity_0w2n24h">
+        <dc:Bounds x="290" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17n50ls_di" bpmnElement="Activity_01dbe2o">
+        <dc:Bounds x="450" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
